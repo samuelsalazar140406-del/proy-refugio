@@ -1,0 +1,7 @@
+---
+const { light = false } = Astro.props;
+---
+<a href="/" class={`flex items-center gap-2 text-sm font-extrabold tracking-[-0.03em] ${light ? 'text-white' : 'text-ink'}`} aria-label="Refugio, inicio">
+  <span class={`grid h-8 w-8 place-items-center rounded-xl text-sm ${light ? 'bg-marigold text-ink' : 'bg-marigold text-ink'}`}>✦</span>
+  <span>refugio<span class="text-marigold">.</span></span>
+</a>

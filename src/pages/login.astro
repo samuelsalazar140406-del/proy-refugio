@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Brand from '../components/layout/Brand.astro';
+---
+<BaseLayout title="Acceso | Refugio">
+  <main class="grid min-h-screen bg-shell lg:grid-cols-[0.9fr_1.1fr]">
+    <section class="relative hidden overflow-hidden bg-lagoon p-10 text-white lg:flex lg:flex-col lg:justify-between">
+      <div class="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-marigold"></div>
+      <div class="relative z-10"><Brand light /></div>
+      <div class="relative z-10 max-w-md pb-10"><p class="eyebrow text-marigold">Panel privado</p><h1 class="mt-5 font-display text-7xl leading-[0.88]">Cuidar<br /><em>mejor.</em></h1><p class="mt-7 max-w-xs text-sm leading-7 text-white/65">Administra las historias del refugio desde un solo lugar.</p></div>
+      <span class="relative z-10 text-xs text-white/40">Refugio · Administracion</span>
+    </section>
+    <section class="flex items-center justify-center px-5 py-12 sm:px-12">
+      <div class="w-full max-w-md">
+        <div class="mb-12 lg:hidden"><Brand /></div>
+        <p class="eyebrow text-lagoon">Bienvenido de vuelta</p>
+        <h2 class="mt-4 font-display text-5xl leading-none text-ink">Entra al refugio<span class="text-marigold">.</span></h2>
+        <p class="mt-4 text-sm leading-6 text-ink/55">Usa tus credenciales de administrador para continuar.</p>
+        <form id="login-form" class="mt-10 space-y-5" novalidate>
+          <label class="block"><span class="mb-2 block text-xs font-extrabold uppercase tracking-[0.12em] text-ink/60">Usuario</span><input class="field" name="usuario" autocomplete="username" placeholder="Samuel14" /></label>
+          <label class="block"><span class="mb-2 block text-xs font-extrabold uppercase tracking-[0.12em] text-ink/60">Contrasena</span><input class="field" name="contrasena" type="password" autocomplete="current-password" placeholder="••••••••" /></label>
+          <p id="login-error" class="hidden rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700"></p>
+          <button class="pill-button w-full bg-lagoon text-white hover:bg-ink" type="submit">Entrar al panel <span class="ml-2">↗</span></button>
+        </form>
+        <a class="mt-8 inline-flex text-xs font-bold text-lagoon hover:underline" href="/">← Volver al inicio</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    import { loginSchema } from '../schemas/auth.schema';
+    import { loginRequest } from '../lib/api/auth.api';
+    import { saveToken } from '../lib/auth/session';
+    import { ApiError } from '../lib/api/client';
+
+    const form = document.querySelector<HTMLFormElement>('#login-form');
+    const error = document.querySelector<HTMLParagraphElement>('#login-error');
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      error?.classList.add('hidden');
+      const values = Object.fromEntries(new FormData(form).entries());
+      const parsed = loginSchema.safeParse(values);
+      if (!parsed.success) {
+        if (error) { error.textContent = parsed.error.issues[0]?.message ?? 'Revisa tus datos'; error.classList.remove('hidden'); }
+        return;
+      }
+      const submit = form.querySelector('button');
+      if (submit) { submit.disabled = true; submit.textContent = 'Entrando...'; }
+      try {
+        const result = await loginRequest(parsed.data.usuario, parsed.data.contrasena);
+        saveToken(result.token);
+        window.location.href = '/admin';
+      } catch (requestError) {
+        if (error) { error.textContent = requestError instanceof ApiError ? requestError.message : 'No se pudo conectar con el backend'; error.classList.remove('hidden'); }
+        if (submit) { submit.disabled = false; submit.innerHTML = 'Entrar al panel <span class="ml-2">↗</span>'; }
+      }
+    });
+  </script>
+</BaseLayout>

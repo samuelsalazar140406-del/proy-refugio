@@ -1,0 +1,34 @@
+---
+import Brand from './Brand.astro';
+---
+<header class="absolute inset-x-0 top-0 z-20 px-5 py-6 lg:px-10">
+  <div class="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-white/25 bg-ink/15 px-5 py-2.5 shadow-lg shadow-ink/10 backdrop-blur-md">
+    <Brand light />
+    <nav class="hidden items-center gap-6 text-[0.62rem] font-extrabold uppercase tracking-[0.14em] text-white/85 md:flex" aria-label="Navegacion principal">
+      <a class="transition hover:text-sage" href="/#inicio">Inicio</a>
+      <a class="transition hover:text-sage" href="/#historia">El refugio</a>
+      <a class="transition hover:text-sage" href="/#impacto">Impacto</a>
+      <a class="transition hover:text-sage" href="/#ayuda">Como ayudar</a>
+      <a class="transition hover:text-sage" href="/#contacto">Contacto</a>
+      <a class="transition hover:text-sage" href="/#creadores">Creadores</a>
+    </nav>
+    <a class="hidden rounded-full bg-sage px-4 py-2 text-[0.62rem] font-extrabold uppercase tracking-[0.12em] text-ink transition hover:bg-white md:inline-flex" href="/login">Administracion</a>
+    <button id="mobile-menu-button" class="grid h-9 w-9 place-items-center rounded-full border border-white/30 text-white md:hidden" aria-label="Abrir menu" aria-expanded="false">☰</button>
+  </div>
+  <nav id="mobile-menu" class="mx-auto mt-2 hidden max-w-6xl rounded-3xl bg-ink p-5 text-sm text-white md:hidden">
+    <a class="block border-b border-white/10 py-3" href="/#historia">El refugio</a>
+    <a class="block border-b border-white/10 py-3" href="/#impacto">Impacto</a>
+    <a class="block border-b border-white/10 py-3" href="/#ayuda">Como ayudar</a>
+    <a class="block border-b border-white/10 py-3" href="/#contacto">Contacto</a>
+    <a class="block border-b border-white/10 py-3" href="/#creadores">Creadores</a>
+    <a class="block py-3 text-sage" href="/login">Administracion</a>
+  </nav>
+</header>
+<script>
+  const menuButton = document.querySelector('#mobile-menu-button');
+  const menu = document.querySelector('#mobile-menu');
+  menuButton?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.toggle('hidden');
+    menuButton.setAttribute('aria-expanded', String(isOpen));
+  });
+</script>

@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-family: 'Manrope', Arial, sans-serif;
+  background: #f5e9d7;
+  color: #3e302b;
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; }
+button, input, select { font: inherit; }
+
+@layer components {
+  .eyebrow { @apply text-[0.68rem] font-extrabold uppercase tracking-[0.22em]; }
+  .pill-button { @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] transition duration-200; }
+  .field { @apply w-full rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm text-ink outline-none transition placeholder:text-ink/40 focus:border-lagoon focus:ring-4 focus:ring-lagoon/10; }
+}
